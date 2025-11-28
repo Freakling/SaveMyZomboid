@@ -52,7 +52,7 @@ The script automatically uses:
 
 You do NOT need to configure paths manually.
 
-## ▶How to Run
+## How to Run
 
 ### **Method 1 – Double-Click**
 Double-click: ``Start-SaveMyZomboid.bat``
