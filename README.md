@@ -4,6 +4,8 @@ This tool adds a **save/load system** to Project Zomboid singleplayer.
 It allows you to rotate multiple save slots, recover saves, restore old versions, and automatically back up (save) your world while playing.
 # ! BACKUP YOUR SAVE FILES BEFORE USING THIS TOOL !
 
+This is built and tested for unstable build 42. It should work for future builds as well
+
 ---
 
 ![alt text](image-2.png)
