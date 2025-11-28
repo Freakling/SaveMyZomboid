@@ -295,6 +295,7 @@ function Get-FlattenedSaves {
             if (Test-Path $backupBase) {
                 $slotsFolders = Get-ChildItem -Path $backupBase -Directory -ErrorAction SilentlyContinue | Sort-Object LastWriteTimeUtc -Descending
                 $slots = $slotsFolders | ForEach-Object { $_.Name }
+                $slots
             }
             # include latest recovered if present
             if (Test-Path (Join-Path $backupBase "latest recovered")) {
@@ -403,7 +404,7 @@ while ($true) {
                     $base = $entry.BackupBase
                     $slots = @()
                     if (Test-Path $base) {
-                        $slots = Get-ChildItem -Path $base -Directory -ErrorAction SilentlyContinue | Sort-Object Name | ForEach-Object { $_.Name }
+                        $slots = Get-ChildItem -Path $base -Directory -ErrorAction SilentlyContinue | Sort-Object LastWriteTimeUtc -Descending | ForEach-Object { $_.Name }
                     }
                     # move "latest recovered" to descriptive name if exists
                     if (Test-Path (Join-Path $base "latest recovered")) {

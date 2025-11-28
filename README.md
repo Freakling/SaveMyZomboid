@@ -8,7 +8,9 @@ It allows you to rotate multiple save slots, recover saves, restore old versions
 
 ![alt text](image-2.png)
 
-![alt text](image-1.png)
+Load menu sorts based on LastWriteTime, meaning the latest saves are on top. Latest recovered is always on top and will automatically overwrite if loaded.
+To manually inspect timestamps etc go to ``%userprofile%\Zomboid\Backup\<World>\<Save>\<Slot>`` in explorer
+![alt text](image-3.png)
 
 ## What the Tool Does
 
