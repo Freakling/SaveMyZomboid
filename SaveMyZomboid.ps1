@@ -215,32 +215,15 @@ $jobScript = {
                     $TrackedFiles | ForEach-Object{If($old.$_ -ne $current.$_){$hasChanged = $true}}
                     
                     if($hasChanged) {
-                        # update fingerprint
-                        $fp[$key] = $current
-                        Save-FingerprintJ $fp
                         # rotate into next numeric slot in BackupFolder\<world>\<save>\n
                         $saveBase = Join-Path $BackupFolder "$($world.Name)\$($save.Name)"
-                        if (-not (Test-Path $saveBase)) { New-Item -Path $saveBase -ItemType Directory -Force | Out-Null }
-                        # find next index (1..SaveCount). We keep slots numbered 1..SaveCount, removing oldest if needed.
-                        #$existing = Get-ChildItem -Path $saveBase -Directory -ErrorAction SilentlyContinue | Sort-Object Name 
-                        # This code removes old saves. Not needed as we have instead use robocopy mir to delete.
-                        #if ($existing.Count -ge $SaveCount) {
-                        #    # remove oldest (by Name sort)
-                        #    $oldest = $existing | Select-Object -First 1
-                        #    Remove-Item -Path $oldest.FullName -Recurse -Force -ErrorAction SilentlyContinue
-                        #    # recompute existing
-                        #    $existing = Get-ChildItem -Path $saveBase -Directory -ErrorAction SilentlyContinue | Sort-Object Name
-                        #}
-                        # next index is last + 1 or 1 if none
-                        #$last = ($existing | Select-Object -Last 1).Name
-                        #$nextIndex = 1
-                        #if ($last -and ($last -as [int])) { $nextIndex = [int]$last + 1 }
+                        if (-not (Test-Path $saveBase)) { New-Item -Path $saveBase -ItemType Directory -Force | Out-Null
 
                         # get the existing saves up to $savecount
                         $existing = Get-ChildItem -Path $saveBase -Directory -ErrorAction SilentlyContinue | Where-Object{$_.Name -in (1..$SaveCount)} | Sort-Object LastWriteTimeUtc
                         $newest = $existing | select -Last 1
                         $oldest = $existing | select -First 1
-                        If($existing.Count -lt $SaveCount){$nextIndex = [int]$oldest.Name + 1}
+                        If($existing.Count -lt $SaveCount){$nextIndex = [int]$existing.Count +1}
                         Else{ $nextIndex = [int]$oldest.Name}
                         $target = Join-Path $saveBase $nextIndex
                         New-Item -Path $target -ItemType Directory -Force | Out-Null
@@ -250,6 +233,10 @@ $jobScript = {
                             $rc = Run-RobocopyJ $save.FullName $target
                             if ($rc -ge 8) { LogJ "Robocopy error code $rc while backing up $key" } else { LogJ "Robocopy ok -> slot $nextIndex" }
                         }
+
+                        # update fingerprint
+                        $fp[$key] = $current
+                        Save-FingerprintJ $fp
                     }
                 }
             }
