@@ -217,7 +217,7 @@ $jobScript = {
                     if($hasChanged) {
                         # rotate into next numeric slot in BackupFolder\<world>\<save>\n
                         $saveBase = Join-Path $BackupFolder "$($world.Name)\$($save.Name)"
-                        if (-not (Test-Path $saveBase)) { New-Item -Path $saveBase -ItemType Directory -Force | Out-Null
+                        if (-not (Test-Path $saveBase)) { New-Item -Path $saveBase -ItemType Directory -Force | Out-Null }
 
                         # get the existing saves up to $savecount
                         $existing = Get-ChildItem -Path $saveBase -Directory -ErrorAction SilentlyContinue | Where-Object{$_.Name -in (1..$SaveCount)} | Sort-Object LastWriteTimeUtc
